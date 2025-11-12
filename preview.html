@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas WebAR Preview Generator</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .preview-container {
+            width: 360px;
+            height: 640px;
+            position: relative;
+            background: linear-gradient(to bottom, #87ceeb, #ffffff);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .preview-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .background-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px);
+        }
+        
+        .person-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+        
+        .overlay-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .text-top {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #ff0000, #00ff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .text-bottom {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12px;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .decoration {
+            position: absolute;
+        }
+        
+        .tree { bottom: 20px; left: 20px; width: 80px; height: 80px; }
+        .snowman { bottom: 20px; right: 100px; width: 100px; height: 100px; }
+        .santa { top: 80px; left: 20px; width: 80px; height: 80px; }
+        .star-1 { top: 60px; right: 40px; width: 30px; height: 30px; animation: twinkle 2s infinite; }
+        .star-2 { top: 150px; right: 30px; width: 25px; height: 25px; animation: twinkle 2s infinite 0.5s; }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        .info {
+            margin-top: 30px;
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="preview-content">
+            <div class="background-pattern"></div>
+            
+            <!-- Person placeholder -->
+            <div class="person-placeholder">😊</div>
+            
+            <!-- Overlay elements -->
+            <div class="overlay-elements">
+                <div class="text-top">Merry Christmas 2025</div>
+                <div class="text-bottom">WebAR Powered by Qukuri</div>
+                
+                <!-- Decorations -->
+                <img src="tree.svg" class="decoration tree" alt="Tree">
+                <img src="snowman.svg" class="decoration snowman" alt="Snowman">
+                <img src="santa.svg" class="decoration santa" alt="Santa">
+                <img src="star.svg" class="decoration star-1" alt="Star">
+                <img src="star.svg" class="decoration star-2" alt="Star">
+            </div>
+        </div>
+    </div>
+    
+    <div class="info">
+        <h1>Christmas WebAR Photo Frame</h1>
+        <p>クリスマスの特別な瞬間を素敵なフレームと共に撮影しましょう！</p>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📷</div>
+                <div class="feature-text">リアルタイムカメラ</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-text">美しいSVGフレーム</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💾</div>
+                <div class="feature-text">画像保存機能</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <div class="feature-text">SNS共有対応</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Merry Christmas 2025! クリスマスフレームで素敵な写真を撮影しよう - WebAR Powered by Qukuri">
+    <meta name="keywords" content="Christmas, WebAR, Camera, Photo Frame, クリスマス, 写真, フレーム">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Christmas WebAR Photo Frame 2025">
+    <meta property="og:description" content="クリスマスフレームで素敵な写真を撮影してシェアしよう！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="preview.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Christmas WebAR Photo Frame 2025">
+    <meta name="twitter:description" content="クリスマスフレームで素敵な写真を撮影してシェアしよう！">
+    <meta name="twitter:image" content="preview.png">
+    
+    <!-- PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#dc143c">
+    
+    <title>Christmas WebAR Photo Frame 2025 | Powered by Qukuri</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <!-- Loading Indicator -->
+    <div class="loading">カメラを起動中...</div>
+    
+    <!-- Video Container -->
+    <div id="video-container">
+        <video id="camera-video" autoplay playsinline muted></video>
+        
+        <!-- Overlay Container -->
+        <div id="overlay">
+            <!-- Text Overlays -->
+            <div id="merry-christmas" class="text-overlay">Merry Christmas 2025</div>
+            <div id="powered-by" class="text-overlay">WebAR Powered by Qukuri</div>
+            
+            <!-- SVG Decorations -->
+            <img src="tree.svg" id="tree-decoration" class="svg-decoration" alt="Christmas Tree">
+            <img src="snowman.svg" id="snowman-decoration" class="svg-decoration" alt="Snowman">
+            <img src="santa.svg" id="santa-decoration" class="svg-decoration" alt="Santa">
+            
+            <!-- Scattered Stars -->
+            <img src="star.svg" class="star-decoration star-1" alt="Star">
+            <img src="star.svg" class="star-decoration star-2" alt="Star">
+            <img src="star.svg" class="star-decoration star-3" alt="Star">
+        </div>
+    </div>
+    
+    <!-- Hidden Canvas for Image Processing -->
+    <canvas id="canvas"></canvas>
+    
+    <!-- Control Buttons -->
+    <div id="controls" class="hidden">
+        <!-- Capture Button -->
+        <button id="btn-capture" class="btn btn-capture">
+            📷 撮影
+        </button>
+        
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button id="btn-save" class="btn btn-save action-btn" disabled>
+                💾 画像を保存
+            </button>
+            <button id="btn-share-x" class="btn btn-share-x">
+                🐦 Xでページをシェア
+            </button>
+            <button id="btn-share-fb" class="btn btn-share-fb">
+                👍 Facebookでページをシェア
+            </button>
+            <button id="btn-share-app" class="btn btn-share-app action-btn" disabled>
+                📱 画像をアプリに共有
+            </button>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+    
+    <!-- No Script Message -->
+    <noscript>
+        <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                    background: white; padding: 20px; border-radius: 10px; 
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
+            <h2>JavaScriptを有効にしてください</h2>
+            <p>このWebアプリケーションを使用するには、JavaScriptを有効にする必要があります。</p>
+        </div>
+    </noscript>
+</body>
+</html>

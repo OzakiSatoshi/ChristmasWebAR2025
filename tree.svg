@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- ツリー本体（３段） -->
+  <!-- 最上段 -->
+  <path d="M100 30 L70 70 L130 70 Z" fill="#0d7938"/>
+  <!-- 中段 -->
+  <path d="M100 50 L60 90 L140 90 Z" fill="#0f8b41"/>
+  <!-- 下段 -->
+  <path d="M100 70 L50 110 L150 110 Z" fill="#119f4a"/>
+  
+  <!-- 木の幹 -->
+  <rect x="90" y="110" width="20" height="30" fill="#8b4513"/>
+  
+  <!-- 星（頂上） -->
+  <path d="M100 20 L104 30 L115 30 L106 37 L110 48 L100 40 L90 48 L94 37 L85 30 L96 30 Z" fill="#ffd700"/>
+  
+  <!-- オーナメント（赤い丸） -->
+  <circle cx="85" cy="65" r="5" fill="#dc143c"/>
+  <circle cx="115" cy="65" r="5" fill="#dc143c"/>
+  <circle cx="95" cy="85" r="5" fill="#dc143c"/>
+  <circle cx="105" cy="85" r="5" fill="#dc143c"/>
+  <circle cx="75" cy="100" r="5" fill="#dc143c"/>
+  <circle cx="125" cy="100" r="5" fill="#dc143c"/>
+  
+  <!-- オーナメント（金の丸） -->
+  <circle cx="100" cy="75" r="5" fill="#ffd700"/>
+  <circle cx="90" cy="95" r="5" fill="#ffd700"/>
+  <circle cx="110" cy="95" r="5" fill="#ffd700"/>
+  
+  <!-- キラキラ効果 -->
+  <g opacity="0.7">
+    <circle cx="70" cy="50" r="1.5" fill="#fff"/>
+    <circle cx="130" cy="55" r="1.5" fill="#fff"/>
+    <circle cx="80" cy="80" r="1.5" fill="#fff"/>
+    <circle cx="120" cy="85" r="1.5" fill="#fff"/>
+  </g>
+</svg>

@@ -1,0 +1,320 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+}
+
+/* Video Container */
+#video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+}
+
+#camera-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Overlay Container */
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Text Overlays */
+.text-overlay {
+    position: absolute;
+    color: white;
+    text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.8),
+        -1px -1px 2px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    z-index: 15;
+    pointer-events: none;
+}
+
+#merry-christmas {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(24px, 6vw, 36px);
+    background: linear-gradient(45deg, #ff0000, #00ff00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+#powered-by {
+    bottom: 20px;
+    right: 20px;
+    font-size: clamp(12px, 3vw, 16px);
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* SVG Decorations */
+.svg-decoration {
+    position: absolute;
+    pointer-events: none;
+    z-index: 12;
+}
+
+#tree-decoration {
+    bottom: 20px;
+    left: 20px;
+    width: clamp(80px, 20vw, 150px);
+    height: auto;
+    animation: sway 3s ease-in-out infinite;
+}
+
+#snowman-decoration {
+    bottom: 20px;
+    right: 120px;
+    width: clamp(80px, 20vw, 150px);
+    height: auto;
+    animation: wobble 4s ease-in-out infinite;
+}
+
+#santa-decoration {
+    top: 80px;
+    left: 20px;
+    width: clamp(80px, 20vw, 150px);
+    height: auto;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+/* Snowflakes Animation */
+.snowflake {
+    position: absolute;
+    top: -50px;
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+    animation: fall linear infinite;
+    z-index: 11;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(calc(100vh + 50px)) rotate(360deg);
+    }
+}
+
+/* Controls Container */
+#controls {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    z-index: 20;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 90vw;
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-capture {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    font-size: 18px;
+    padding: 15px 30px;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.btn-share-x {
+    background: linear-gradient(135deg, #1DA1F2 0%, #0077B5 100%);
+}
+
+.btn-share-fb {
+    background: linear-gradient(135deg, #1877F2 0%, #3b5998 100%);
+}
+
+.btn-share-app {
+    background: linear-gradient(135deg, #E1306C 0%, #405DE6 100%);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none !important;
+}
+
+#canvas {
+    display: none;
+}
+
+/* Loading State */
+.loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    font-size: 18px;
+}
+
+/* Animations */
+@keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
+
+@keyframes wobble {
+    0%, 100% { transform: rotate(0deg) translateX(0); }
+    25% { transform: rotate(2deg) translateX(2px); }
+    75% { transform: rotate(-2deg) translateX(-2px); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Stars scattered around */
+.star-decoration {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+    z-index: 11;
+}
+
+.star-1 {
+    top: 10%;
+    right: 15%;
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+.star-2 {
+    top: 30%;
+    right: 10%;
+    animation: twinkle 3s ease-in-out infinite 0.5s;
+}
+
+.star-3 {
+    bottom: 40%;
+    left: 10%;
+    animation: twinkle 3s ease-in-out infinite 1s;
+}
+
+@keyframes twinkle {
+    0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(0.8);
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #controls {
+        bottom: 40px;
+    }
+    
+    .btn {
+        font-size: 12px;
+        padding: 10px 15px;
+    }
+    
+    .btn-capture {
+        font-size: 16px;
+        padding: 12px 25px;
+    }
+    
+    #powered-by {
+        bottom: 10px;
+        right: 10px;
+    }
+}
+
+@media (orientation: landscape) {
+    #tree-decoration {
+        bottom: 10px;
+        left: 10px;
+        width: clamp(60px, 15vw, 120px);
+    }
+    
+    #snowman-decoration {
+        bottom: 10px;
+        width: clamp(60px, 15vw, 120px);
+    }
+    
+    #santa-decoration {
+        top: 60px;
+        width: clamp(60px, 15vw, 120px);
+    }
+    
+    #merry-christmas {
+        top: 10px;
+    }
+}

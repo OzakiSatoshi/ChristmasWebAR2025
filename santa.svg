@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- サンタの帽子 -->
+  <path d="M50 80 C50 50, 100 30, 150 60 L140 100 L60 100 Z" fill="#dc143c"/>
+  <circle cx="148" cy="62" r="12" fill="#ffffff"/>
+  <rect x="55" y="95" width="90" height="12" fill="#ffffff"/>
+  
+  <!-- 顔 -->
+  <ellipse cx="100" cy="100" rx="45" ry="40" fill="#fdbcb4"/>
+  
+  <!-- ひげ -->
+  <path d="M55 100 C55 120, 70 140, 100 140 C130 140, 145 120, 145 100 L145 115 C145 125, 130 145, 100 145 C70 145, 55 125, 55 115 Z" fill="#ffffff"/>
+  
+  <!-- 口ひげ -->
+  <ellipse cx="80" cy="110" rx="15" ry="8" fill="#ffffff"/>
+  <ellipse cx="120" cy="110" rx="15" ry="8" fill="#ffffff"/>
+  
+  <!-- 目 -->
+  <circle cx="85" cy="90" r="5" fill="#000000"/>
+  <circle cx="115" cy="90" r="5" fill="#000000"/>
+  <circle cx="86" cy="89" r="2" fill="#ffffff"/>
+  <circle cx="116" cy="89" r="2" fill="#ffffff"/>
+  
+  <!-- 眉毛 -->
+  <path d="M75 80 Q85 75, 95 80" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M105 80 Q115 75, 125 80" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- 鼻 -->
+  <ellipse cx="100" cy="100" rx="8" ry="10" fill="#ff9999"/>
+  
+  <!-- 頬の赤み -->
+  <circle cx="65" cy="100" r="8" fill="#ff6b6b" opacity="0.3"/>
+  <circle cx="135" cy="100" r="8" fill="#ff6b6b" opacity="0.3"/>
+  
+  <!-- 口 -->
+  <path d="M90 115 Q100 120, 110 115" stroke="#8b0000" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- キラキラ効果 -->
+  <g opacity="0.7">
+    <circle cx="160" cy="50" r="2" fill="#ffd700"/>
+    <circle cx="40" cy="70" r="2" fill="#ffd700"/>
+    <circle cx="165" cy="80" r="1.5" fill="#ffffff"/>
+    <circle cx="35" cy="95" r="1.5" fill="#ffffff"/>
+  </g>
+</svg>

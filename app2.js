@@ -79,11 +79,11 @@ class ChristmasAR {
     const shareApp = document.getElementById('btn-share-app');
     if (shareApp) shareApp.addEventListener('click', () => this.shareImageToApps());
     const shareX = document.getElementById('btn-share-x');
-    if (shareX) shareX.addEventListener('click', () => this.shareImageToApps({ platform: 'x' }));
+    if (shareX) shareX.addEventListener('click', () => this.shareToX());
     const shareFB = document.getElementById('btn-share-fb');
-    if (shareFB) shareFB.addEventListener('click', () => this.shareImageToApps({ platform: 'facebook' }));
+    if (shareFB) shareFB.addEventListener('click', () => this.shareToFacebook());
     const shareIG = document.getElementById('btn-share-ig');
-    if (shareIG) shareIG.addEventListener('click', () => this.shareImageToApps({ platform: 'instagram' }));
+    if (shareIG) shareIG.addEventListener('click', () => this.shareToInstagram());
 
     window.addEventListener('orientationchange', () => {
       setTimeout(() => this.resizeCanvas(), 100);
@@ -177,15 +177,17 @@ class ChristmasAR {
       alert('先に写真を撮影してください。');
       return;
     }
+    // シェアURLを事前に取得してテキストに含める
+    const shareUrl = await this.getShareUrl();
     if (navigator.share && navigator.canShare) {
       try {
         const blob = await this.dataURLtoBlob(this.capturedImage);
         const file = new File([blob], 'christmas_photo.png', { type: 'image/png' });
         if (navigator.canShare({ files: [file] })) {
-          const text = 'Merry Christmas 2025! 🎄✨ #Christmas #WebAR';
+          const text = `Merry Christmas 2025! 🎄✨ #Christmas #WebAR\n${shareUrl}`;
           await navigator.share({ title: 'Christmas WebAR', text, files: [file] });
         } else {
-          await navigator.share({ title: 'Christmas WebAR', url: window.location.href });
+          await navigator.share({ title: 'Christmas WebAR', url: shareUrl });
         }
       } catch (err) {
         if (err.name !== 'AbortError') {
@@ -195,6 +197,103 @@ class ChristmasAR {
       }
     } else {
       this.showShareFallback();
+    }
+  }
+
+  // Platform-specific helpers
+  async shareToX() {
+    const shareUrl = await this.getShareUrl();
+    const text = `Merry Christmas 2025! 🎄✨ ${shareUrl}`;
+    // Prefer Web Share with attached image
+    if (navigator.share && navigator.canShare && this.capturedImage) {
+      try {
+        const blob = await this.dataURLtoBlob(this.capturedImage);
+        const file = new File([blob], 'christmas_photo.png', { type: 'image/png' });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ title: 'Christmas WebAR', text, files: [file] });
+          return;
+        }
+      } catch (_) {}
+    }
+    // Fallback: X intent (imageは添付不可)
+    const intent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    // Attempt app deep link first
+    const scheme = `twitter://post?message=${encodeURIComponent(text)}`;
+    this.openAppOrWeb(scheme, intent);
+  }
+
+  async shareToFacebook() {
+    const shareUrl = await this.getShareUrl();
+    const text = 'Merry Christmas 2025! 🎄✨';
+    const url = shareUrl;
+    // Prefer Web Share with attached image
+    if (navigator.share && navigator.canShare && this.capturedImage) {
+      try {
+        const blob = await this.dataURLtoBlob(this.capturedImage);
+        const file = new File([blob], 'christmas_photo.png', { type: 'image/png' });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ title: 'Christmas WebAR', text: `${text} ${url}`, files: [file] });
+          return;
+        }
+      } catch (_) {}
+    }
+    // Fallback: Facebookシェアダイアログ（画像は添付不可）
+    const web = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
+    // Try to open app via facewebmodal
+    const scheme = `fb://facewebmodal/f?href=${encodeURIComponent(web)}`;
+    this.openAppOrWeb(scheme, web);
+  }
+
+  async shareToInstagram() {
+    // InstagramはWebから画像添付の直接指定は不可。Web Share APIで対応端末は画像添付可能。
+    if (navigator.share && navigator.canShare && this.capturedImage) {
+      try {
+        const blob = await this.dataURLtoBlob(this.capturedImage);
+        const file = new File([blob], 'christmas_photo.png', { type: 'image/png' });
+        if (navigator.canShare({ files: [file] })) {
+          const shareUrl = await this.getShareUrl();
+          await navigator.share({ title: 'Christmas WebAR', text: shareUrl, files: [file] });
+          return;
+        }
+      } catch (_) {}
+    }
+    // Fallback: Instagramアプリ起動（画像は自動添付不可のため、保存→選択を案内）
+    alert('Instagramで共有するには、まず画像を保存し、Instagramアプリで選択してください。アプリを開きます。');
+    const scheme = 'instagram://library';
+    const web = 'https://www.instagram.com/';
+    this.openAppOrWeb(scheme, web);
+  }
+
+  // Upload image to server and return share URL
+  async getShareUrl() {
+    if (this._shareUrl) return this._shareUrl;
+    if (!this.capturedImage) throw new Error('no image');
+    const blob = await this.dataURLtoBlob(this.capturedImage);
+    const file = new File([blob], 'christmas_photo.png', { type: 'image/png' });
+    const fd = new FormData();
+    fd.append('file', file);
+    const res = await fetch('/api/upload', { method: 'POST', body: fd });
+    if (!res.ok) throw new Error('upload failed');
+    const data = await res.json();
+    if (!data.ok) throw new Error('upload failed');
+    this._shareUrl = data.shareUrl;
+    return this._shareUrl;
+  }
+
+  openAppOrWeb(schemeUrl, webUrl) {
+    // Try to open app scheme, then fallback to web after a short delay.
+    const now = Date.now();
+    const timeout = setTimeout(() => {
+      if (Date.now() - now < 1600) {
+        window.location.href = webUrl;
+      }
+    }, 1200);
+    // Some browsers block window.open for schemes; use location change.
+    try {
+      window.location.href = schemeUrl;
+    } catch (_) {
+      clearTimeout(timeout);
+      window.location.href = webUrl;
     }
   }
 
@@ -300,4 +399,3 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   new ChristmasAR();
 });
-

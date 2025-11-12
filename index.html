@@ -62,32 +62,30 @@
     <!-- Hidden Canvas for Image Processing -->
     <canvas id="canvas"></canvas>
     
-    <!-- Control Buttons -->
+    <!-- Control Buttons (Live) -->
     <div id="controls" class="hidden">
-        <!-- Capture Button -->
-        <button id="btn-capture" class="btn btn-capture">
+        <button id="btn-capture" class="btn btn-capture" aria-label="撮影">
             📷 撮影
         </button>
-        
-        <!-- Action Buttons -->
-        <div class="button-group">
-            <button id="btn-save" class="btn btn-save action-btn" disabled>
-                💾 画像を保存
-            </button>
-            <button id="btn-share-x" class="btn btn-share-x">
-                🐦 Xでページをシェア
-            </button>
-            <button id="btn-share-fb" class="btn btn-share-fb">
-                👍 Facebookでページをシェア
-            </button>
-            <button id="btn-share-app" class="btn btn-share-app action-btn" disabled>
-                📱 画像をアプリに共有
-            </button>
+    </div>
+
+    <!-- Preview Overlay (after capture) -->
+    <div id="preview" class="hidden" aria-live="polite" aria-label="撮影プレビュー">
+        <div class="preview-content">
+            <img id="preview-image" alt="撮影画像プレビュー">
+        </div>
+        <div class="preview-actions">
+            <button id="btn-retake" class="btn" aria-label="撮り直し">↩️ 撮り直し</button>
+            <button id="btn-save" class="btn btn-save" aria-label="画像を保存">💾 保存</button>
+            <button id="btn-share-app" class="btn btn-share-app" aria-label="アプリに共有">📱 共有</button>
+            <button id="btn-share-x" class="btn btn-share-x" aria-label="Xに共有">🐦 X</button>
+            <button id="btn-share-fb" class="btn btn-share-fb" aria-label="Facebookに共有">👍 Facebook</button>
+            <button id="btn-share-ig" class="btn" aria-label="Instagramに共有">📸 Instagram</button>
         </div>
     </div>
     
     <!-- JavaScript -->
-    <script src="app.js"></script>
+    <script src="app2.js"></script>
     
     <!-- No Script Message -->
     <noscript>

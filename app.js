@@ -88,7 +88,7 @@ class ChristmasAR {
 
         } catch (error) {
             console.error('Camera access error:', error);
-            this.showError('カメラへのアクセスが拒否されました。ブラウザの設定でカメラの使用を許可してください。');
+            this.showError('カメラへのアクセスが拒否されました。ブラウザの設定でカメラの使用を許可してください、E);
         }
     }
 
@@ -145,15 +145,8 @@ class ChristmasAR {
         // Convert to data URL
         this.capturedImage = this.canvas.toDataURL('image/png');
 
-        // Enable action buttons
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.disabled = false;
-        });
-
         // Visual feedback
-        this.flashEffect();
-        
-        this.isCapturing = false;
+        this.flashEffect();\n\n        // �v���r���[�\���ɐ؂�ւ�\n        this.showPreview();\n        this.isCapturing = false;
     }
 
     drawDecorations() {
@@ -270,7 +263,7 @@ class ChristmasAR {
 
     saveImage() {
         if (!this.capturedImage) {
-            alert('先に写真を撮影してください。');
+            alert('先に写真を撮影してください、E);
             return;
         }
 
@@ -296,7 +289,7 @@ class ChristmasAR {
 
     async shareImageToApps() {
         if (!this.capturedImage) {
-            alert('先に写真を撮影してください。');
+            alert('先に写真を撮影してください、E);
             return;
         }
 
@@ -311,14 +304,14 @@ class ChristmasAR {
                 if (navigator.canShare({ files: [file] })) {
                     await navigator.share({
                         title: 'Merry Christmas 2025!',
-                        text: 'クリスマスの思い出をシェア！ 🎄✨',
+                        text: 'クリスマスの思い出をシェア�E�E🎄✨',
                         files: [file]
                     });
                 } else {
                     // Fallback to URL sharing
                     await navigator.share({
                         title: 'Merry Christmas 2025!',
-                        text: 'クリスマスの思い出をシェア！ 🎄✨',
+                        text: 'クリスマスの思い出をシェア�E�E🎄✨',
                         url: window.location.href
                     });
                 }
@@ -346,7 +339,7 @@ class ChristmasAR {
     }
 
     showShareFallback() {
-        alert('お使いのブラウザでは直接共有できません。\n画像を保存してから、各アプリで共有してください。');
+        alert('お使ぁE�Eブラウザでは直接共有できません、En画像を保存してから、各アプリで共有してください、E);
     }
 
     flashEffect() {
@@ -435,13 +428,13 @@ class ChristmasAR {
 document.addEventListener('DOMContentLoaded', () => {
     // Check for HTTPS
     if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-        alert('このアプリはHTTPS接続が必要です。');
+        alert('こ�EアプリはHTTPS接続が忁E��です、E);
         return;
     }
 
     // Check for camera support
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert('お使いのブラウザはカメラAPIに対応していません。');
+        alert('お使ぁE�EブラウザはカメラAPIに対応してぁE��せん、E);
         return;
     }
 

@@ -122,25 +122,16 @@ html, body {
     }
 }
 
-/* Controls Container */
+/* Controls (live camera) */
 #controls {
     position: absolute;
-    bottom: 60px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    flex-direction: column;
-    gap: 10px;
     align-items: center;
-    z-index: 20;
-}
-
-.button-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
     justify-content: center;
-    max-width: 90vw;
+    z-index: 20;
 }
 
 /* Button Styles */
@@ -278,7 +269,7 @@ html, body {
 /* Responsive Design */
 @media (max-width: 600px) {
     #controls {
-        bottom: 40px;
+        bottom: 24px;
     }
     
     .btn {
@@ -295,6 +286,42 @@ html, body {
         bottom: 10px;
         right: 10px;
     }
+}
+
+/* Preview overlay */
+#preview {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    z-index: 50;
+}
+
+#preview .preview-content {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#preview-image {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.preview-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
 }
 
 @media (orientation: landscape) {

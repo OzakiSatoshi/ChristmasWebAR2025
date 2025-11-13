@@ -38,30 +38,29 @@ html, body {
     z-index: 10;
 }
 
-/* Text Overlays */
+/* Text/Image Overlays */
 .text-overlay {
-    position: absolute;
-    color: white;
-    text-shadow: 
-        2px 2px 4px rgba(0, 0, 0, 0.8),
-        -1px -1px 2px rgba(0, 0, 0, 0.5),
-        0 0 10px rgba(0, 0, 0, 0.7);
-    font-weight: bold;
-    z-index: 15;
-    pointer-events: none;
+  position: absolute;
+  color: white;
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.8),
+    -1px -1px 2px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(0, 0, 0, 0.7);
+  font-weight: bold;
+  z-index: 15;
+  pointer-events: none;
 }
 
 #merry-christmas {
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: clamp(24px, 6vw, 36px);
-    background: linear-gradient(45deg, #ff0000, #00ff00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(180px, 60vw, 520px);
+  height: auto;
+  z-index: 15;
+  pointer-events: none;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
 }
 
 #powered-by {
@@ -341,7 +340,24 @@ html, body {
         width: clamp(60px, 15vw, 120px);
     }
     
-    #merry-christmas {
-        top: 10px;
-    }
+    #merry-christmas { top: 10px; }
+}
+
+/* Face overlays */
+.head-gear {
+  position: absolute;
+  z-index: 16;
+  pointer-events: none;
+  transform-origin: center top;
+}
+
+.nose-dot {
+  position: absolute;
+  z-index: 16;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff8080, #e00000 60%, #940000);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35), 0 0 10px rgba(255,0,0,0.4);
+  pointer-events: none;
 }

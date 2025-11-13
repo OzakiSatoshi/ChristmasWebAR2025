@@ -21,6 +21,7 @@
     
     <!-- PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#dc143c">
     
@@ -28,6 +29,8 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
+    <!-- Inline icon to avoid favicon 404 on GitHub Pages -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%84%3C/text%3E%3C/svg%3E">
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,13 +46,13 @@
         
         <!-- Overlay Container -->
         <div id="overlay">
-            <!-- Text Overlays -->
-            <div id="merry-christmas" class="text-overlay">Merry Christmas 2025</div>
+            <!-- Title Image Overlay -->
+            <img id="merry-christmas" src="MerryChristmas2025.png" alt="MerryChristmas2025" />
             <div id="powered-by" class="text-overlay">WebAR Powered by Qukuri</div>
             
-            <!-- SVG Decorations -->
-            <img src="tree.svg" id="tree-decoration" class="svg-decoration" alt="Christmas Tree">
-            <img src="snowman.svg" id="snowman-decoration" class="svg-decoration" alt="Snowman">
+            <!-- Decorations -->
+            <img src="tree.png" id="tree-decoration" class="svg-decoration" alt="Christmas Tree">
+            <img src="snowman.png" id="snowman-decoration" class="svg-decoration" alt="Snowman">
             <img src="santa.svg" id="santa-decoration" class="svg-decoration" alt="Santa">
             
             <!-- Scattered Stars -->
@@ -84,8 +87,12 @@
         </div>
     </div>
     
+    <!-- Optional: set upload API base when hosted on static (e.g., GitHub Pages) -->
+    <!-- <script>window.SHARE_API_BASE = 'https://your-upload-server.example.com';</script> -->
+    <!-- MediaPipe Face Detection (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
     <!-- JavaScript -->
-    <script src="app2.js"></script>
+    <script src="app3.js"></script>
     
     <!-- No Script Message -->
     <noscript>

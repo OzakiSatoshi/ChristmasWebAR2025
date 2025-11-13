@@ -8,6 +8,7 @@ class ChristmasAR {
     this.capturedImage = null;
     this.svgImages = {};
     this.isCapturing = false;
+    this._uploadFailedNotified = false;
 
     this.init();
   }
@@ -66,7 +67,7 @@ class ChristmasAR {
       document.getElementById('controls').classList.remove('hidden');
     } catch (error) {
       console.error('Camera access error:', error);
-      this.showError('カメラへのアクセスが拒否されました。ブラウザの設定でカメラの使用を許可してください。');
+      this.showError('カメラへのアクセスが拒否されました。ブラウザの設定でカメラの使用を許可してください、E);
     }
   }
 
@@ -163,7 +164,7 @@ class ChristmasAR {
 
   saveImage() {
     if (!this.capturedImage) {
-      alert('先に写真を撮影してください。');
+      alert('先に写真を撮影してください、E);
       return;
     }
     const link = document.createElement('a');
@@ -174,10 +175,10 @@ class ChristmasAR {
 
   async shareImageToApps(opts = {}) {
     if (!this.capturedImage) {
-      alert('先に写真を撮影してください。');
+      alert('先に写真を撮影してください、E);
       return;
     }
-    // シェアURLを事前に取得してテキストに含める
+    // シェアURLを事前に取得してチE��ストに含める
     const shareUrl = await this.getShareUrl();
     if (navigator.share && navigator.canShare) {
       try {
@@ -237,16 +238,14 @@ class ChristmasAR {
         }
       } catch (_) {}
     }
-    // Fallback: Facebookシェアダイアログ（画像は添付不可）
-    const web = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
+    // Fallback: Facebookシェアダイアログ�E�画像�E添付不可�E�E    const web = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
     // Try to open app via facewebmodal
     const scheme = `fb://facewebmodal/f?href=${encodeURIComponent(web)}`;
     this.openAppOrWeb(scheme, web);
   }
 
   async shareToInstagram() {
-    // InstagramはWebから画像添付の直接指定は不可。Web Share APIで対応端末は画像添付可能。
-    if (navigator.share && navigator.canShare && this.capturedImage) {
+    // InstagramはWebから画像添付�E直接持E���E不可。Web Share APIで対応端末は画像添付可能、E    if (navigator.share && navigator.canShare && this.capturedImage) {
       try {
         const blob = await this.dataURLtoBlob(this.capturedImage);
         const file = new File([blob], 'christmas_photo.png', { type: 'image/png' });
@@ -257,30 +256,40 @@ class ChristmasAR {
         }
       } catch (_) {}
     }
-    // Fallback: Instagramアプリ起動（画像は自動添付不可のため、保存→選択を案内）
-    alert('Instagramで共有するには、まず画像を保存し、Instagramアプリで選択してください。アプリを開きます。');
-    const scheme = 'instagram://library';
-    const web = 'https://www.instagram.com/';
-    this.openAppOrWeb(scheme, web);
+    // Fallback: Instagramアプリ起動（画像�E自動添付不可のため、保存�E選択を案�E�E�E    alert('Instagramで共有するには、まず画像を保存し、Instagramアプリで選択してください。アプリを開きます、E);
+    const scheme = 'instagram://library';\n    const web = 'https://www.instagram.com/';\n    const intentAndroid = 'intent://library#Intent;package=com.instagram.android;scheme=instagram;end';\n    this.openAppOrWeb(scheme, web, intentAndroid);
   }
 
   // Upload image to server and return share URL
   async getShareUrl() {
     if (this._shareUrl) return this._shareUrl;
     if (!this.capturedImage) throw new Error('no image');
-    const blob = await this.dataURLtoBlob(this.capturedImage);
-    const file = new File([blob], 'christmas_photo.png', { type: 'image/png' });
-    const fd = new FormData();
-    fd.append('file', file);
-    const res = await fetch('/api/upload', { method: 'POST', body: fd });
-    if (!res.ok) throw new Error('upload failed');
-    const data = await res.json();
-    if (!data.ok) throw new Error('upload failed');
-    this._shareUrl = data.shareUrl;
-    return this._shareUrl;
+    const apiBase = (window.SHARE_API_BASE || window.__API_BASE__ || '').replace(/\/$/, '');
+    try {
+      if (!apiBase) throw new Error('no api base');
+      const blob = await this.dataURLtoBlob(this.capturedImage);
+      const file = new File([blob], 'christmas_photo.png', { type: 'image/png' });
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch(`${apiBase}/api/upload`, { method: 'POST', body: fd });
+      if (!res.ok) throw new Error('upload failed');
+      const data = await res.json();
+      if (!data.ok || !data.shareUrl) throw new Error('upload failed');
+      this._shareUrl = data.shareUrl;
+      return this._shareUrl;
+    } catch (e) {
+      console.warn('Upload unavailable, fallback to page URL:', e);
+      const fallbackUrl = window.location.href;
+      if (!this._uploadFailedNotified) {
+        this._uploadFailedNotified = true;
+        alert('画像�E一時アチE�Eロード�Eが未設定�Eため、�EージURLで共有します。管琁E��E�E window.SHARE_API_BASE を設定してください、E);
+      }
+      this._shareUrl = fallbackUrl;
+      return this._shareUrl;
+    }
   }
 
-  openAppOrWeb(schemeUrl, webUrl) {
+  openAppOrWeb(schemeUrl, webUrl, intentUrl) {
     // Try to open app scheme, then fallback to web after a short delay.
     const now = Date.now();
     const timeout = setTimeout(() => {
@@ -290,7 +299,7 @@ class ChristmasAR {
     }, 1200);
     // Some browsers block window.open for schemes; use location change.
     try {
-      window.location.href = schemeUrl;
+      const ua = navigator.userAgent || '';\n      const isAndroid = /Android/i.test(ua);\n      if (isAndroid && intentUrl) {\n        window.location.href = intentUrl;\n      } else {\n        window.location.href = schemeUrl;\n      }
     } catch (_) {
       clearTimeout(timeout);
       window.location.href = webUrl;
@@ -308,7 +317,7 @@ class ChristmasAR {
   }
 
   showShareFallback() {
-    alert('このブラウザでは画像の直接共有に対応していません。保存後、X/Facebook/Instagram アプリで画像を添付して共有してください。');
+    alert('こ�Eブラウザでは画像�E直接共有に対応してぁE��せん。保存後、X/Facebook/Instagram アプリで画像を添付して共有してください、E);
   }
 
   flashEffect() {
@@ -390,12 +399,13 @@ class ChristmasAR {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-    alert('このアプリはHTTPS接続が必要です。');
+    alert('こ�EアプリはHTTPS接続が忁E��です、E);
     return;
   }
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alert('お使いのブラウザはカメラAPIに対応していません。');
+    alert('お使ぁE�EブラウザはカメラAPIに対応してぁE��せん、E);
     return;
   }
   new ChristmasAR();
 });
+

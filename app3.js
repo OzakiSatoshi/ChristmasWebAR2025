@@ -202,7 +202,7 @@ class ChristmasAR {
     const w = this.canvas.width, h = this.canvas.height;
     const items = [
       { img: this.svgImages.tree, x: w * 0.02, y: h * 0.7,  W: w * 0.30, H: w * 0.30 },
-      { img: this.svgImages.snowman, x: w * 0.85, y: h * 0.65, W: w * 0.40,  H: w * 0.40 },
+      { img: this.svgImages.snowman, x: w * 0.58, y: h * 0.65, W: w * 0.40,  H: w * 0.40 },
       { img: this.svgImages.santa, x: w * 0.02, y: h * 0.05, W: w * 0.15, H: w * 0.15 },
       { img: this.svgImages.star, x: w * 0.8,  y: h * 0.1,  W: w * 0.08, H: w * 0.08 },
       { img: this.svgImages.star, x: w * 0.85, y: h * 0.25, W: w * 0.06, H: w * 0.06 },
@@ -323,7 +323,7 @@ class ChristmasAR {
   }
 
   async shareToInstagram() {
-    if (navigator.share && navigator.canShare && this.capturedImage)) {
+    if (navigator.share && navigator.canShare && this.capturedImage) {
       try {
         const url = await this.getShareUrl();
         const blob = await this.dataURLtoBlob(this.capturedImage);

@@ -89,8 +89,10 @@
     
     <!-- Optional: set upload API base when hosted on static (e.g., GitHub Pages) -->
     <!-- <script>window.SHARE_API_BASE = 'https://your-upload-server.example.com';</script> -->
-    <!-- MediaPipe Face Detection (CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
+    <!-- MediaPipe Face Detection (CDN, version pinned) -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@0.4/face_detection.js"></script>
+    <!-- Fallback CDN (unpkg) in case jsDelivr is blocked -->
+    <script src="https://unpkg.com/@mediapipe/face_detection@0.4/face_detection.js"></script>
     <!-- JavaScript -->
     <script src="app3.js"></script>
     

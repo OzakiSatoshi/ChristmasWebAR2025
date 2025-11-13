@@ -27,6 +27,11 @@ html, body {
     object-fit: cover;
 }
 
+/* Mirrored preview for selfie-like experience */
+#camera-video.mirrored {
+  transform: scaleX(-1);
+}
+
 /* Overlay Container */
 #overlay {
     position: absolute;
@@ -53,12 +58,12 @@ html, body {
 
 #merry-christmas {
   position: absolute;
-  top: 20px;
+  top: 4px; /* tighter top margin */
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(180px, 60vw, 520px);
+  width: clamp(225px, 75vw, 650px); /* ~1.25x bigger */
   height: auto;
-  z-index: 15;
+  z-index: 30; /* above head-gear (z=16) */
   pointer-events: none;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
 }
@@ -341,7 +346,7 @@ html, body {
         width: clamp(60px, 15vw, 120px);
     }
     
-    #merry-christmas { top: 10px; }
+    #merry-christmas { top: 4px; }
 }
 
 /* Face overlays */
@@ -350,6 +355,7 @@ html, body {
   z-index: 16;
   pointer-events: none;
   transform-origin: center top;
+  will-change: transform, left, top, width;
 }
 
 .nose-dot {

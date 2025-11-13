@@ -110,57 +110,75 @@ class ChristmasAR {
     };
 
     let ok = await initFD();
-    if (!ok) {
-      await new Promise((resolve) => {
-        const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js';
-        s.async = true;
-        s.onload = resolve;
-        s.onerror = resolve;
-        document.head.appendChild(s);
-      });
-      ok = await initFD();
-    }
+    const loadScript = (src) => new Promise((resolve) => { const s = document.createElement('script'); s.src = src; s.async = true; s.onload = resolve; s.onerror = resolve; document.head.appendChild(s); });
 
     if (!ok) {
-      if ('FaceDetector' in window) {
-        try {
-          this._faceDetector = new window.FaceDetector({ fastMode: true });
-          // Create a small shim so startFaceDetectionLoop can call fd.send
-          this.fd = {
-            send: async ({ image }) => {
-              try {
-                const faces = await this._faceDetector.detect(image);
-                if (faces && faces.length) {
-                  const f = faces[0].boundingBox || faces[0].boundingRect || faces[0].box || faces[0];
-                  const vwCSS = this.video.clientWidth || overlay.clientWidth || 1;
-                  const vhCSS = this.video.clientHeight || overlay.clientHeight || 1;
-                  const bb = {
-                    xCenter: (f.x + f.width / 2) / vwCSS,
-                    yCenter: (f.y + f.height / 2) / vhCSS,
-                    width: f.width / vwCSS,
-                    height: f.height / vhCSS,
-                  };
-                  this.onFaceResults({ detections: [{ boundingBox: bb }] });
-                } else {
-                  this.onFaceResults({ detections: [] });
-                }
-              } catch (_e) {
-                this.onFaceResults({ detections: [] });
-              }
-            }
-          };
-          ok = true;
-        } catch (e) {
-          console.warn('Built-in FaceDetector init failed.', e);
-        }
+      // Try local copies first (optional placement), then CDN
+      const candidates = [
+        './mediapipe/face_detection.js',
+        './libs/mediapipe/face_detection.js',
+        'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js'
+      ];
+      for (const u of candidates) {
+        await loadScript(u);
+        ok = await initFD();
+        if (ok) break;
       }
     }
 
-    if (ok) {
+    // Fallback to built-in FaceDetector
+    const tryFaceDetector = () => {
+      if (!('FaceDetector' in window)) return false;
+      try {
+        this._faceDetector = new window.FaceDetector({ fastMode: true });
+        this.fd = {
+          send: async ({ image }) => {
+            try {
+              const faces = await this._faceDetector.detect(image);
+              if (faces && faces.length) {
+                const f = faces[0].boundingBox || faces[0].boundingRect || faces[0].box || faces[0];
+                const vwCSS = this.video.clientWidth || overlay.clientWidth || 1;
+                const vhCSS = this.video.clientHeight || overlay.clientHeight || 1;
+                const bb = {
+                  xCenter: (f.x + f.width / 2) / vwCSS,
+                  yCenter: (f.y + f.height / 2) / vhCSS,
+                  width: f.width / vwCSS,
+                  height: f.height / vhCSS,
+                };
+                this.onFaceResults({ detections: [{ boundingBox: bb }] });
+              } else {
+                this.onFaceResults({ detections: [] });
+              }
+            } catch (_e) {
+              this.onFaceResults({ detections: [] });
+            }
+          }
+        };
+        return true;
+      } catch (_) { return false; }
+    };
+
+    if (ok || (ok = tryFaceDetector())) {
       this.startFaceDetectionLoop();
     } else {
-      console.warn('MediaPipe Face Detection library not found.');
+      // Retry a few times in case the CDN script loads slowly
+      console.warn('MediaPipe Face Detection library not found. Retrying...');
+      this._fdRetryCount = 0;
+      const retry = async () => {
+        if (this.fd) return; // already initialized
+        this._fdRetryCount++;
+        const ok2 = await initFD();
+        if (ok2 || tryFaceDetector()) {
+          this.startFaceDetectionLoop();
+          return;
+        }
+        if (this._fdRetryCount < 10) {
+          setTimeout(retry, 500);
+        } else {
+          console.warn('Face detection unavailable after retries. Proceeding without tracking.');
+        }
+      };
+      setTimeout(retry, 500);
     }
   }
 

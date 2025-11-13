@@ -201,8 +201,8 @@ class ChristmasAR {
   drawDecorations() {
     const w = this.canvas.width, h = this.canvas.height;
     const items = [
-      { img: this.svgImages.tree, x: w * 0.02, y: h * 0.7,  W: w * 0.15, H: w * 0.15 },
-      { img: this.svgImages.snowman, x: w * 0.75, y: h * 0.65, W: w * 0.2,  H: w * 0.2 },
+      { img: this.svgImages.tree, x: w * 0.02, y: h * 0.7,  W: w * 0.30, H: w * 0.30 },
+      { img: this.svgImages.snowman, x: w * 0.85, y: h * 0.65, W: w * 0.40,  H: w * 0.40 },
       { img: this.svgImages.santa, x: w * 0.02, y: h * 0.05, W: w * 0.15, H: w * 0.15 },
       { img: this.svgImages.star, x: w * 0.8,  y: h * 0.1,  W: w * 0.08, H: w * 0.08 },
       { img: this.svgImages.star, x: w * 0.85, y: h * 0.25, W: w * 0.06, H: w * 0.06 },
@@ -422,7 +422,11 @@ class ChristmasAR {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (location.protocol !== 'https:' && location.hostname !== 'localhost') { alert('HTTPS is required.'); return; }
+  const isSecure = location.protocol === 'https:' || ['localhost', '127.0.0.1', '::1'].includes(location.hostname);
+  if (!isSecure) {
+    // Allow running for local/dev hosts even on http; some browsers may still block.
+    console.warn('Running without HTTPS. Camera may be blocked by the browser.');
+  }
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { alert('Camera API is not supported.'); return; }
   new ChristmasAR();
 });

@@ -83,15 +83,15 @@ html, body {
 #tree-decoration {
     bottom: 20px;
     left: 20px;
-    width: clamp(80px, 20vw, 150px);
+    width: clamp(160px, 40vw, 300px);
     height: auto;
     animation: sway 3s ease-in-out infinite;
 }
 
 #snowman-decoration {
     bottom: 20px;
-    right: 120px;
-    width: clamp(80px, 20vw, 150px);
+    right: 20px;
+    width: clamp(160px, 40vw, 300px);
     height: auto;
     animation: wobble 4s ease-in-out infinite;
 }
@@ -327,12 +327,13 @@ html, body {
     #tree-decoration {
         bottom: 10px;
         left: 10px;
-        width: clamp(60px, 15vw, 120px);
+        width: clamp(120px, 30vw, 240px);
     }
     
     #snowman-decoration {
         bottom: 10px;
-        width: clamp(60px, 15vw, 120px);
+        right: 16px;
+        width: clamp(120px, 30vw, 240px);
     }
     
     #santa-decoration {

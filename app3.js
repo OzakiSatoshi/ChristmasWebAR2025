@@ -14,6 +14,7 @@ class ChristmasAR {
     // Face overlays / detection
     this.fd = null;
     this._fdBusy = false;
+    this._fdLoopStarted = false;
     this.lastDetection = null;
     this.headChoice = Math.random() < 0.5 ? 'antlers' : 'santa';
     this.headImg = new Image();
@@ -93,20 +94,43 @@ class ChristmasAR {
       overlay.appendChild(this.noseEl);
     }
 
-    // Setup MediaPipe Face Detection (if loaded)
-    if (window.FaceDetection && window.FaceDetection.FaceDetection) {
-      this.fd = new window.FaceDetection.FaceDetection({
+    // Setup MediaPipe Face Detection (try both namespaces + dynamic load)
+    const initFD = async () => {
+      const NS = (window.FaceDetection || window.faceDetection || window.Facedetection);
+      if (!NS || !NS.FaceDetection) return false;
+      this.fd = new NS.FaceDetection({
         locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
       });
       this.fd.setOptions({ model: 'short', minDetectionConfidence: 0.5 });
       this.fd.onResults((results) => this.onFaceResults(results));
+      if (typeof this.fd.initialize === 'function') {
+        try { await this.fd.initialize(); } catch (_) {}
+      }
+      return true;
+    };
+
+    let ok = await initFD();
+    if (!ok) {
+      await new Promise((resolve) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js';
+        s.async = true;
+        s.onload = resolve;
+        s.onerror = resolve;
+        document.head.appendChild(s);
+      });
+      ok = await initFD();
+    }
+    if (ok) {
+      this.startFaceDetectionLoop();
     } else {
       console.warn('MediaPipe Face Detection library not found.');
     }
   }
 
   startFaceDetectionLoop() {
-    if (!this.fd) return;
+    if (!this.fd || this._fdLoopStarted) return;
+    this._fdLoopStarted = true;
     const loop = async () => {
       if (!this.video || !this.video.videoWidth) { requestAnimationFrame(loop); return; }
       if (!this._fdBusy) {

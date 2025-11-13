@@ -136,11 +136,12 @@ class ChristmasAR {
     }
 
     // Relative bounding box to pixels
-    const bb = det.boundingBox || {};
-    const w = (bb.width || ((bb.xMax || 0) - (bb.xMin || 0))) * vw;
-    const h = (bb.height || ((bb.yMax || 0) - (bb.yMin || 0))) * vh;
-    const xCenter = (bb.xCenter !== undefined ? bb.xCenter * vw : ((bb.xMin || 0) * vw + w / 2));
-    const yCenter = (bb.yCenter !== undefined ? bb.yCenter * vh : ((bb.yMin || 0) * vh + h / 2));
+    const bb = det.boundingBox || (det.locationData && det.locationData.relativeBoundingBox) || {};
+    const has = (v) => typeof v === 'number' && !isNaN(v);
+    const w = (has(bb.width) ? bb.width : ((has(bb.xMax) && has(bb.xMin)) ? (bb.xMax - bb.xMin) : 0)) * vw;
+    const h = (has(bb.height) ? bb.height : ((has(bb.yMax) && has(bb.yMin)) ? (bb.yMax - bb.yMin) : 0)) * vh;
+    const xCenter = has(bb.xCenter) ? bb.xCenter * vw : (has(bb.xMin) ? (bb.xMin * vw + w / 2) : vw / 2);
+    const yCenter = has(bb.yCenter) ? bb.yCenter * vh : (has(bb.yMin) ? (bb.yMin * vh + h / 2) : vh / 2);
     const yMin = yCenter - h / 2;
 
     // Position head element

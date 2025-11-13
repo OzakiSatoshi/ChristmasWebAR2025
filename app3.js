@@ -121,6 +121,42 @@ class ChristmasAR {
       });
       ok = await initFD();
     }
+
+    if (!ok) {
+      if ('FaceDetector' in window) {
+        try {
+          this._faceDetector = new window.FaceDetector({ fastMode: true });
+          // Create a small shim so startFaceDetectionLoop can call fd.send
+          this.fd = {
+            send: async ({ image }) => {
+              try {
+                const faces = await this._faceDetector.detect(image);
+                if (faces && faces.length) {
+                  const f = faces[0].boundingBox || faces[0].boundingRect || faces[0].box || faces[0];
+                  const vwCSS = this.video.clientWidth || overlay.clientWidth || 1;
+                  const vhCSS = this.video.clientHeight || overlay.clientHeight || 1;
+                  const bb = {
+                    xCenter: (f.x + f.width / 2) / vwCSS,
+                    yCenter: (f.y + f.height / 2) / vhCSS,
+                    width: f.width / vwCSS,
+                    height: f.height / vhCSS,
+                  };
+                  this.onFaceResults({ detections: [{ boundingBox: bb }] });
+                } else {
+                  this.onFaceResults({ detections: [] });
+                }
+              } catch (_e) {
+                this.onFaceResults({ detections: [] });
+              }
+            }
+          };
+          ok = true;
+        } catch (e) {
+          console.warn('Built-in FaceDetector init failed.', e);
+        }
+      }
+    }
+
     if (ok) {
       this.startFaceDetectionLoop();
     } else {
@@ -291,6 +327,23 @@ class ChristmasAR {
     const a = document.createElement('a');
     a.download = `christmas_${Date.now()}.png`;
     a.href = this.capturedImage; a.click();
+  }
+
+  showPreview() {
+    const prev = document.getElementById('preview');
+    const img = document.getElementById('preview-image');
+    if (img && this.capturedImage) img.src = this.capturedImage;
+    if (prev) prev.classList.remove('hidden');
+    const controls = document.getElementById('controls');
+    if (controls) controls.classList.add('hidden');
+  }
+
+  hidePreview() {
+    const prev = document.getElementById('preview');
+    if (prev) prev.classList.add('hidden');
+    const controls = document.getElementById('controls');
+    if (controls) controls.classList.remove('hidden');
+    this.capturedImage = null;
   }
 
   async shareImageToApps() {
